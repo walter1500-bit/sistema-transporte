@@ -1,0 +1,72 @@
+{% extends 'transporte/base.html' %}
+
+{% block content %}
+<div class="card" style="margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+        <div>
+            <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; letter-spacing: -1.5px; color: var(--text);">{{ viaje.ruta.origen }} a {{ viaje.ruta.destino }}</h1>
+            <p style="color: var(--text-dim); font-size: 1.1rem;">{{ viaje.fecha_salida|date:"l, d de F de Y" }} a las {{ viaje.fecha_salida|time:"H:i" }}</p>
+        </div>
+        <div style="text-align: right;">
+            <p style="font-size: 1.5rem; font-weight: 700; color: var(--success); margin: 0;">Q{{ viaje.ruta.precio }}</p>
+            <p style="font-size: 0.9rem; color: var(--text-dim);">Tarifa estándar</p>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        <div>
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem; display: flex; align-items: center; color: var(--text);">
+                <span style="background: var(--primary); width: 4px; height: 1.5rem; display: inline-block; margin-right: 0.8rem; border-radius: 2px;"></span>
+                Información del Autobús
+            </h3>
+            <div style="background: var(--bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                <p style="margin-bottom: 0.8rem;"><span style="color: var(--text-dim);">Placa:</span> <span style="font-weight: 600; color: var(--text);">{{ viaje.autobus.placa }}</span></p>
+                <p style="margin-bottom: 0.8rem;"><span style="color: var(--text-dim);">Capacidad Total:</span> <span style="font-weight: 600; color: var(--text);">{{ viaje.autobus.capacidad }} pasajeros</span></p>
+                <p style="margin-bottom: 0;"><span style="color: var(--text-dim);">Estado:</span> <span class="badge badge-success">Operativo</span></p>
+            </div>
+
+            <h3 style="margin: 2rem 0 1.5rem 0; font-size: 1.2rem; display: flex; align-items: center; color: var(--text);">
+                <span style="background: var(--primary); width: 4px; height: 1.5rem; display: inline-block; margin-right: 0.8rem; border-radius: 2px;"></span>
+                Asientos Ocupados
+            </h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {% for boleto in boletos %}
+                <span class="badge badge-info" title="{{ boleto.pasajero.nombre }}">#{{ boleto.numero_asiento }}</span>
+                {% empty %}
+                <p style="color: var(--text-dim); font-size: 0.9rem;">No hay asientos ocupados aún.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem; display: flex; align-items: center; color: var(--text);">
+                <span style="background: var(--primary); width: 4px; height: 1.5rem; display: inline-block; margin-right: 0.8rem; border-radius: 2px;"></span>
+                Reserva tu Asiento
+            </h3>
+            
+            {% if error %}
+            <div style="background: rgba(244, 63, 94, 0.1); color: var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(244, 63, 94, 0.2); font-size: 0.9rem;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'reservar_boleto' viaje.id %}">
+                {% csrf_token %}
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">Nombre Completo</label>
+                <input type="text" name="nombre" placeholder="Ej. Juan Pérez" required>
+                
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">DPI (13 dígitos)</label>
+                <input type="text" name="dpi" placeholder="1234 56789 0101" required>
+                
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">Correo Electrónico</label>
+                <input type="email" name="correo" placeholder="juan@email.com" required>
+                
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">Número de Asiento (1 al {{ viaje.autobus.capacidad }})</label>
+                <input type="number" name="numero_asiento" min="1" max="{{ viaje.autobus.capacidad }}" placeholder="Ej. 12" required>
+                
+                <button type="submit" class="btn" style="width: 100%; margin-top: 1rem; font-size: 1rem; padding: 1rem;">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

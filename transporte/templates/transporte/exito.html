@@ -1,0 +1,25 @@
+{% extends 'transporte/base.html' %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 4rem;">
+    <div style="background: rgba(16, 185, 129, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem auto; color: var(--success); font-size: 2.5rem;">
+        &check;
+    </div>
+    <h1 style="font-size: 2.5rem; margin-bottom: 1rem; letter-spacing: -1.5px;">¡Reserva Confirmada!</h1>
+    <p style="color: var(--text-dim); font-size: 1.1rem; max-width: 500px; margin: 0 auto 2.5rem auto;">
+        Tu boleto para el viaje de <span style="color: white; font-weight: 600;">{{ boleto.viaje.ruta.origen }} a {{ boleto.viaje.ruta.destino }}</span> ha sido procesado con éxito.
+    </p>
+    
+    <div style="background: rgba(15, 23, 42, 0.5); padding: 2rem; border-radius: 12px; border: 1px solid #334155; display: inline-block; text-align: left; margin-bottom: 2.5rem;">
+        <p style="margin-bottom: 0.8rem;"><span style="color: var(--text-dim);">Pasajero:</span> <span style="font-weight: 600;">{{ boleto.pasajero.nombre }}</span></p>
+        <p style="margin-bottom: 0.8rem;"><span style="color: var(--text-dim);">DPI:</span> <span style="font-weight: 600;">{{ boleto.pasajero.dpi }}</span></p>
+        <p style="margin-bottom: 0.8rem;"><span style="color: var(--text-dim);">Asiento:</span> <span class="badge badge-info">#{{ boleto.numero_asiento }}</span></p>
+        <p style="margin-bottom: 0;"><span style="color: var(--text-dim);">Fecha:</span> <span style="font-weight: 600;">{{ boleto.viaje.fecha_salida|date:"d/m/Y H:i" }}</span></p>
+    </div>
+
+    <div>
+        <a href="{% url 'lista_viajes' %}" class="btn">Volver al Inicio</a>
+        <a href="{% url 'imprimir_boleto' boleto.id %}" target="_blank" class="btn" style="background: var(--primary-dark); color: white; margin-left: 1rem;">🖨️ Imprimir Ticket</a>
+    </div>
+</div>
+{% endblock %}

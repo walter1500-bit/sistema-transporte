@@ -1,0 +1,33 @@
+{% extends "transporte/base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="text-primary">Panel de Administración</h2>
+        <p class="text-muted">Bienvenido, {{ user.username }}. Gestiona los recursos de Sanluiseña Express.</p>
+    </div>
+</div>
+
+<div class="grid">
+    <div class="card text-center">
+        <h3>Autobuses</h3>
+        <p class="display-4 text-primary font-weight-bold">{{ total_buses }}</p>
+        <p class="text-muted">Total de unidades registradas</p>
+        <a href="{% url 'lista_buses' %}" class="btn mt-3 w-100">Administrar Autobuses</a>
+    </div>
+
+    <div class="card text-center">
+        <h3>Rutas</h3>
+        <p class="display-4 text-success font-weight-bold">{{ total_rutas }}</p>
+        <p class="text-muted">Rutas disponibles</p>
+        <a href="{% url 'lista_rutas' %}" class="btn mt-3 w-100" style="background-color: var(--success);">Administrar Rutas</a>
+    </div>
+
+    <div class="card text-center">
+        <h3>Viajes Programados</h3>
+        <p class="display-4 text-info font-weight-bold">{{ total_viajes }}</p>
+        <p class="text-muted">Viajes en el sistema</p>
+        <a href="{% url 'lista_viajes_admin' %}" class="btn mt-3 w-100" style="background-color: #6366f1;">Administrar Viajes</a>
+    </div>
+</div>
+{% endblock %}

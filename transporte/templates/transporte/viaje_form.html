@@ -1,0 +1,23 @@
+{% extends "transporte/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header text-white" style="background-color: #6366f1;">
+                <h4 class="mb-0">{% if object %}Editar Viaje{% else %}Nuevo Viaje{% endif %}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="mt-4">
+                        <button type="submit" class="btn" style="background-color: #6366f1;">Guardar</button>
+                        <a href="{% url 'lista_viajes_admin' %}" class="btn" style="background-color: var(--text-dim);">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

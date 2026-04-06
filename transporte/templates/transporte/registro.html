@@ -1,0 +1,23 @@
+{% extends "transporte/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm mt-5">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Registro de Cliente</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success w-100">Crear Cuenta</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <small>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia Sesión</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

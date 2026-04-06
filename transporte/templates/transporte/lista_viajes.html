@@ -1,0 +1,44 @@
+{% extends 'transporte/base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+    <div>
+        <h1 style="font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -1px;">Próximos Viajes</h1>
+        <p style="color: var(--text-dim); margin: 0;">Explora las rutas disponibles y reserva tu asiento ahora.</p>
+    </div>
+    <div style="font-size: 0.9rem; color: var(--text-dim);">
+        <span class="badge badge-info" style="margin-right: 0.5rem;">Total: {{ viajes|length }} viajes</span>
+    </div>
+</div>
+
+<div class="grid">
+    {% for viaje in viajes %}
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <span class="badge badge-success">{{ viaje.ruta.origen }} &rarr; {{ viaje.ruta.destino }}</span>
+            <span style="font-weight: 700; color: var(--success); font-size: 1.1rem;">Q{{ viaje.ruta.precio }}</span>
+        </div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">{{ viaje.fecha_salida|date:"D, d M Y" }}</h3>
+        <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.5rem;">
+            Salida: <span style="color: var(--text); font-weight: 600;">{{ viaje.fecha_salida|time:"H:i" }}</span><br>
+            Autobús: {{ viaje.autobus.placa }} ({{ viaje.autobus.capacidad }} asientos)
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem;">
+            {% with ocupacion=viaje.porcentaje_ocupacion disponibles=viaje.asientos_disponibles %}
+                <div class="{% if ocupacion >= 90 %}status-red{% elif ocupacion >= 60 %}status-yellow{% else %}status-green{% endif %}" 
+                     style="font-size: 0.85rem; padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 600;">
+                    Disponibles: {{ disponibles }}
+                </div>
+            {% endwith %}
+            <a href="{% url 'detalle_viaje' viaje.id %}" class="btn">Reservar</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+        <p style="color: var(--text-dim);">No hay viajes programados actualmente.</p>
+        <a href="/admin/transporte/viaje/add/" class="btn" style="margin-top: 1.5rem;">Programar Primer Viaje</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

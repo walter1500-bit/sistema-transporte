@@ -1,0 +1,42 @@
+{% extends "transporte/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestión de Autobuses</h2>
+    <a href="{% url 'crear_bus' %}" class="btn btn-success">Nuevo Autobús</a>
+</div>
+
+<div class="card">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border);">
+                <th style="padding: 1rem;">ID</th>
+                <th style="padding: 1rem;">Placa</th>
+                <th style="padding: 1rem;">Capacidad</th>
+                <th style="padding: 1rem;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bus in buses %}
+            <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 1rem;">{{ bus.id }}</td>
+                <td style="padding: 1rem; font-weight: bold;">{{ bus.placa }}</td>
+                <td style="padding: 1rem;">{{ bus.capacidad }} asientos</td>
+                <td style="padding: 1rem;">
+                    <a href="{% url 'editar_bus' bus.id %}" style="color: var(--primary); text-decoration: none; margin-right: 1rem;">Editar</a>
+                    <a href="{% url 'eliminar_bus' bus.id %}" style="color: var(--accent); text-decoration: none;">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-dim);">No hay autobuses registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'admin_dashboard' %}" style="color: var(--text-dim); text-decoration: none;">&larr; Volver al Panel</a>
+</div>
+{% endblock %}

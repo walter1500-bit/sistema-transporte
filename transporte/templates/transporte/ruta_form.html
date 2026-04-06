@@ -1,0 +1,23 @@
+{% extends "transporte/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header text-white" style="background-color: var(--success);">
+                <h4 class="mb-0">{% if object %}Editar Ruta{% else %}Nueva Ruta{% endif %}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="mt-4">
+                        <button type="submit" class="btn" style="background-color: var(--success);">Guardar</button>
+                        <a href="{% url 'lista_rutas' %}" class="btn" style="background-color: var(--text-dim);">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

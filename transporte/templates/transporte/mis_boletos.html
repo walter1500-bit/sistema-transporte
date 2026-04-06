@@ -1,0 +1,37 @@
+{% extends 'transporte/base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 2.5rem;">
+    <h1 style="font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -1px;">Mis Boletos</h1>
+    <p style="color: var(--text-dim); margin: 0;">Historial de tus reservas en Sanluiseña Express.</p>
+</div>
+
+<div class="card">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border);">
+                <th style="padding: 1rem;">Ruta</th>
+                <th style="padding: 1rem;">Fecha Salida</th>
+                <th style="padding: 1rem;">Asiento</th>
+                <th style="padding: 1rem;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for boleto in boletos %}
+            <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 1rem; font-weight: bold;">{{ boleto.viaje.ruta.origen }} a {{ boleto.viaje.ruta.destino }}</td>
+                <td style="padding: 1rem;">{{ boleto.viaje.fecha_salida|date:"d M Y, H:i" }}</td>
+                <td style="padding: 1rem;">#{{ boleto.numero_asiento }}</td>
+                <td style="padding: 1rem;">
+                    <a href="{% url 'imprimir_boleto' boleto.id %}" target="_blank" class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.85rem;">🖨️ Imprimir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-dim);">No has reservado ningún boleto todavía.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
